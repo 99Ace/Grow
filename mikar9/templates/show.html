@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load cloudinary %}
+
+{%block content %}
+
+{% for item in data %}
+    {{ item.invoice }}
+    {% cloudinary item.cover width=250 crop="fill" %}
+{% endfor %}
+
+
+{%endblock%}
+
