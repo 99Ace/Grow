@@ -37,3 +37,29 @@ class NewInvoice(forms.ModelForm):
             'inv_date': "Invoice Date",
         }
     cover = CloudinaryJsFileField()
+
+
+class EditInvoice(forms.ModelForm):
+    class Meta:
+        model = Invoice
+        fields = (
+            'invoice',
+            'invoice_reference',
+            'car_plate',
+            'accounts_receivables',
+            'balance',
+            'accounts_payable',
+            'inv_date',
+        )
+        widgets = {
+            'inv_date': DateInput()
+        }
+        labels = {
+            'invoice': "Invoice for",
+            'invoice_reference': "Reference Number (if any)",
+            'car_plate': "Car plate (if applicable)",
+            'accounts_receivables': "Amount",
+            'balance': "Credit / Debit",
+            'accounts_payable': "Supplier",
+            'inv_date': "Invoice Date",
+        }

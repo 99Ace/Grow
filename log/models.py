@@ -1,5 +1,6 @@
 from django.db import models
-from mikar9.models import Invoice
+from datetime import datetime
+
 # Create your models here.
 
 
@@ -24,8 +25,14 @@ class LogRecord(models.Model):
         default="Unknown"
     )
 
-    """ AUTO ADD THE CREATION DATE """
-    date = models.DateTimeField(auto_now_add=True)
+    log_datetime = models.DateTimeField(
+        default=datetime.now
+    )
 
     def __str__(self):
-        return (self.invoice + " [ log @" + str(self.date) + 'action = '+ self.action +']')
+        return (
+            self.invoice +
+            " (" +
+            str(self.log_datetime) +
+            '), action='
+            + self.action)

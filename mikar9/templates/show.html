@@ -4,10 +4,50 @@
 {%block content %}
 
 {% for item in data %}
+<div>
     {{ item.invoice }}
-    {% cloudinary item.cover width=250 crop="fill" %}
+    {{ item.invoice_reference }}
+    {{ item.car_plate }}
+    SGD $ {{ item.accounts_receivables }}
+    {{ item.balance }}
+    {{ item.accounts_payable }}
+    {{ item.inv_date }}
+    {{ item.financial_year }}
+    {{ item.month }}
+    {{ item.submitter }}
+    
+    {% cloudinary item.cover width=100 crop="fill" alt_text="image not available, refer to year folder"%}
+</div>
+
+<!-- Edit Button -->
+<a type="button" class="btn btn-primary" href="{% url 'edit' item_id=item.id %}">
+    Edit
+</a>
+
+<!-- Delete Button trigger modal -->
+<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Delete
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Confirm removing {{ item.invoice }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a class="btn btn-danger" href="{% url 'delete' item_id=item.id %}" >Remove forever</a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endfor %}
 
 
 {%endblock%}
-

@@ -1,5 +1,6 @@
 from django.db import models
 from cloudinary.models import CloudinaryField
+from datetime import datetime
 
 # Create your models here.
 
@@ -66,8 +67,9 @@ class Invoice(models.Model):
         default="None"
     )
 
-    # AUTO ADD THE CREATION DATE
-    log_date = models.DateTimeField(auto_now_add=True)
+    log_datetime = models.DateTimeField(
+        default=datetime.now
+    )
 
     def __str__(self):
         return (self.invoice + " [" + self.car_plate + ']')
