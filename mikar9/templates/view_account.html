@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load cloudinary %}
+
+{%block content %}
+<section class="container-fluid px-3 py-2">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <select name="financial_year">
+            <option value="all">--select the financial year--</option>
+            <option value="2020">FY 2020</option>
+            <option value="2021">FY 2021</option>
+        </select>
+        <input type="Submit" />
+    </form>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Invoice</th>
+                <th scope="col">Reference <br> <small><i>(invoice)</i></small></th>
+                <th scope="col">Credit</th>
+                <th scope="col">Debit</th>
+                <th scope="col">Supplier</th>
+                <th scope="col">Receipt Date 
+                    <a href=""><i class="fas fa-sort-up"></i></a>
+                    <a href=""><i class="fas fa-sort-down"></i></a>
+                </th>
+                <th scope="col">Submission Date</th>
+                <th scope="col">Submitted by</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in data %}
+            <tr>
+                <td>{{ item.invoice }}</td>
+                <td>{{ item.invoice_reference }}</td>
+                <td>
+                    {% if item.balance == 'Credit' %}
+                    SGD $ {{ item.accounts_receivables }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if item.balance == 'Debit' %}
+                    SGD $ {{ item.accounts_receivables }}
+                    {% endif %}
+                </td>
+                <td>{{ item.accounts_payable }}</td>
+                <td>@{{ item.inv_date }}</td>
+                <td>{{ item.log_datetime }}</td>
+                <td>{{ item.submitter }}</td>
+                <td>
+                    <!-- Edit Button -->
+                    <a type="button" class="text-muted" href="{% url 'edit' item_id=item.id %}"><small>edit</small></a>/
+                    <a type="button" class="text-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">X</a>
+                </td>
+            </tr>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Confirm removing {{ item.invoice }}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <a class="btn btn-danger" href="{% url 'delete' item_id=item.id %}">Remove forever</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{%endblock%}

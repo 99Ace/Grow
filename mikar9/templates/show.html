@@ -3,18 +3,50 @@
 
 {%block content %}
 
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Ref</th>
+      <th scope="col">Invoice</th>
+      <th scope="col">Invoice Reference</th>
+      <th scope="col">Credit</th>
+      <th scope="col">Debit</th>
+      <th scope="col">Supplier</th>
+      <th scope="col">Receipt Date</th>
+      <th scope="col">Submission Date</th>
+      <th scope="col">Submitted by</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in data %}
+    <tr>
+      <th scope="row">{{ item.id }}</th>
+      <td>{{ item.invoice }}</td>
+      <td>{{ item.invoice_reference }}</td>
+      <td>SGD $ {{ item.accounts_receivables }}</td>
+      <td>SGD $ {{ item.accounts_receivables }}</td>
+      <td>{{ item.accounts_payable }}</td>
+      <td>@{{ item.inv_date }}</td>
+      <td>{{ item.log_datetime }}</td>
+      <td>{{ item.submitter }}</td>
+      <td>Edit/Delete</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{{ item.car_plate }}
+
+
 {% for item in data %}
 <div>
-    {{ item.invoice }}
-    {{ item.invoice_reference }}
-    {{ item.car_plate }}
-    SGD $ {{ item.accounts_receivables }}
     {{ item.balance }}
-    {{ item.accounts_payable }}
-    {{ item.inv_date }}
+    
+    
     {{ item.financial_year }}
     {{ item.month }}
-    {{ item.submitter }}
+    
     
     {% cloudinary item.cover width=100 crop="fill" alt_text="image not available, refer to year folder"%}
 </div>

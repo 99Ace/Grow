@@ -38,10 +38,13 @@ class Invoice(models.Model):
         choices=BALANCE,
         blank=False,
     )
-    # Accounts Payable
+    # Accounts Payable (Supplier Name)
     accounts_payable = models.CharField(
         max_length=50,
         blank=False,
+    )
+    paid = models.BooleanField(
+        default=False
     )
     # Invoice Date
     inv_date = models.DateField()
@@ -50,6 +53,9 @@ class Invoice(models.Model):
         max_length=50,
         blank=False,
         default="Master"
+    )
+    claim = models.BooleanField(
+        default=False
     )
     financial_year = models.IntegerField(
         default=9999

@@ -3,6 +3,7 @@ from .forms import NewInvoice, EditInvoice
 from .models import Invoice
 from log.models import LogRecord
 from datetime import datetime, timedelta
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -11,6 +12,7 @@ def mikar9(request):
     return render(request, 'index.html')
 
 
+@login_required
 def add(request):
     if request.method == "POST":
         new_entry = NewInvoice(request.POST)
@@ -69,6 +71,7 @@ def add(request):
     })
 
 
+@login_required
 def edit(request, item_id):
     item = get_object_or_404(Invoice, pk=item_id)
 
@@ -98,11 +101,11 @@ def edit(request, item_id):
 
             # reload in the picture
             instance.cover = item.cover
-            
+
             instance.save()
-            
+
             print('New Entry Saved')
-           
+
             # store log data
             log_details = "{} of ${} is edited by {}".format(
                 instance.invoice,
@@ -128,6 +131,7 @@ def edit(request, item_id):
     })
 
 
+@login_required
 def show(request):
     data = Invoice.objects.all()
     return render(request, 'show.html', {
@@ -135,6 +139,7 @@ def show(request):
     })
 
 
+@login_required
 def delete(request, item_id):
     # retrieve item details
     item = get_object_or_404(Invoice, pk=item_id)
@@ -152,7 +157,7 @@ def delete(request, item_id):
         item.accounts_receivables,
         item.submitter,
     )
-    
+
     newlog = LogRecord(
         invoice=item.invoice,
         action="DELETE",
@@ -164,3 +169,25 @@ def delete(request, item_id):
     print("Log is saved")
 
     return redirect(mikar9)
+
+
+@login_required
+def view_account(request):
+    financial_year = 2020
+    data = []
+    if request.method == "POST":
+        if request.POST.get('financial_year') == "all":
+            data = Invoice.objects.all().order_by('inv_date')
+        else:
+            financial_year = int(request.POST.get('financial_year'))
+            data = Invoice.objects.filter(financial_year=financial_year)
+    return render(request, 'view_account.html', {
+        'data': data
+    })
+
+@login_required
+def sorter(request, data_in):
+    data = data_in
+    return render(request, 'view_account.html', {
+        'data': data
+    })
