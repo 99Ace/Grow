@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     # Custom apps
     'mikar9',
     'log',
+    'cars',
 ]
 
 MIDDLEWARE = [

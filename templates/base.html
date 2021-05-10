@@ -93,7 +93,7 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="{% url 'add' %}">New Expenses</a></li>
-                                <li><a class="dropdown-item" href="{% url 'view_account' %}">View my submission</a></li>
+                                <li><a class="dropdown-item" href="{% url 'view_account' fy_selected='all' choice='up' %}">View my submission</a></li>
                             </ul>
                         </li>
                         {% endif %}

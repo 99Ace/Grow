@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from .forms import NewInvoice, EditInvoice
 from .models import Invoice
 from log.models import LogRecord
@@ -172,22 +172,29 @@ def delete(request, item_id):
 
 
 @login_required
-def view_account(request):
-    financial_year = 2020
+def view_account(request, fy_selected, choice):
     data = []
     if request.method == "POST":
         if request.POST.get('financial_year') == "all":
             data = Invoice.objects.all().order_by('inv_date')
         else:
-            financial_year = int(request.POST.get('financial_year'))
-            data = Invoice.objects.filter(financial_year=financial_year)
+            fy_selected = int(request.POST.get('financial_year'))
+            data = Invoice.objects.filter(financial_year=fy_selected).order_by('inv_date')
+    else:
+        if choice == "up":
+            if fy_selected == "all":
+                data = Invoice.objects.all().order_by('inv_date')
+            else:
+                data = Invoice.objects.filter(financial_year=fy_selected).order_by('inv_date')
+        else:
+            if fy_selected == "all":
+                data = Invoice.objects.all().order_by('inv_date').reverse()
+            else:
+                data = Invoice.objects.filter(financial_year=fy_selected).order_by('inv_date').reverse()
+            
     return render(request, 'view_account.html', {
-        'data': data
+        'data': data,
+        'financial_year': fy_selected
     })
 
-@login_required
-def sorter(request, data_in):
-    data = data_in
-    return render(request, 'view_account.html', {
-        'data': data
-    })
+
