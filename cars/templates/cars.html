@@ -3,10 +3,78 @@
 
 {%block content %}
 <section class="container-fluid px-3 py-2">
-    <select name="carplate" id=""></select>
+
+
     <div class="row">
-        <div class="col bg-dark"><h1>Car P&L</h1></div>
-        <div class="col"></div>
+        <div class="col-4 bg-light">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="d-flex">
+                    <select class="form-select" name="carplate">
+                        <option value="none">--get summary---</option>
+                        {% for car_plate in data%}
+                        <option value="{{ car_plate.id }}"> {{ car_plate.deal_ref }} ({{car_plate.car_plate}})</option>
+                        {% endfor %}
+                    </select>
+                    <button>Submit</button>
+                </div>
+            </form>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" colspan="2">
+                            <h2>Car P&L</h2>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">INVOICE REFERENCE</th>
+                        <td> {{ car.car_plate }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">CAR PLATE</th>
+                        <td> {{ car.car_plate }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">BUYER</th>
+                        <td> {{ car.buyer }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">SELLER</th>
+                        <td> {{ car.seller }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">REFERRAL</th>
+                        <td> {{ car.referral }}</td>
+                    </tr>
+                    <hr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col ht-100vh bg-001">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Transaction date</th>
+                        <th scope="col">Invoice Reference</th>
+                        <th scope="col">Credit</th>
+                        <th scope="col">Debit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in invoices %}
+                    <tr>
+                        <td>{{ item.inv_date}}</td>
+                        <td>{{ item.invoice_reference }}</td>
+                        <td>{{ item.accounts_receivables }}</td>
+                        <td>{{ item.accounts_receivables }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
     </div>
 </section>
 {%endblock%}
