@@ -4,11 +4,20 @@ from .models import Invoice
 from log.models import LogRecord
 from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
 
 # Create your views here.
 
 
 def mikar9(request):
+    # CODE TO SEND EMAIL
+    send_mail(
+        'Subject here',
+        'Here is the message.',
+        'chunliang.ang@gmail.com',
+        ['chunliang.ang@gmail.com'],
+        fail_silently=False,
+    )
     return render(request, 'index.html')
 
 

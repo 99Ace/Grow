@@ -16,15 +16,17 @@ def cars(request):
             'seller': 'Not selected',
             'referral': 'Not selected'
         }
+    invoices = [] 
+
+    print(car['car_plate'])
     if request.method == "POST":
         item_id = request.POST.get('carplate')
         if item_id == 'none':
             pass
         else:
             car = get_object_or_404(CarDeal, pk=item_id)
+            invoices = Invoice.objects.filter(car_plate=car.car_plate)
     
-    print( car.car_plate )
-    invoices = Invoice.objects.filter(car_plate=car.car_plate)
 
     return render(request, 'cars.html', {
         'data': data,
